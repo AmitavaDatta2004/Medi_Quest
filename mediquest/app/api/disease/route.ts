@@ -31,7 +31,7 @@ export async function POST(request: Request) {
 
     requestLog.push({ timestamp: Date.now() });
 
-    const { symptoms } = await request.json();
+    const { symptoms, language = "English" } = await request.json();
 
     if (!symptoms || !Array.isArray(symptoms) || symptoms.length === 0) {
       return NextResponse.json(
@@ -51,7 +51,7 @@ export async function POST(request: Request) {
       - Suggested diet plan and exercises
       - General preventive measures
 
-      Format the response strictly as valid JSON:
+      Format the response strictly as valid JSON and ensure all content is in ${language}:
       {
         "diseases": [
           {

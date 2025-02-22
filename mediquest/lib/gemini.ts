@@ -20,7 +20,7 @@ class RateLimitedGeminiAPI {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
 
-  async analyzeSymptomsAndGetDiseases(symptoms: string[], retries = 3): Promise<any> {
+  async analyzeSymptomsAndGetDiseases(symptoms: string[], retries = 3, selectedLanguage: string): Promise<any> {
     if (!process.env.NEXT_PUBLIC_GEMINI_API_KEY) {
       throw new Error("Please set your NEXT_PUBLIC_GEMINI_API_KEY in the environment variables");
     }
@@ -34,7 +34,7 @@ class RateLimitedGeminiAPI {
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ symptoms }),
+          body: JSON.stringify({ symptoms , language: selectedLanguage}),
         });
 
         console.log(`Response status: ${response.status}`);
