@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { geminiAPI } from "@/lib/gemini";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import HealthReport from "./HealthReport";
@@ -40,9 +41,12 @@ const commonSymptoms = [
   "Sore Throat",
 ];
 
+const languages = ["English", "Spanish", "French", "German", "Chinese", "Hindi", "Bengali"];
+
 export default function SymptomChecker() {
   const [symptoms, setSymptoms] = useState<string[]>([]);
   const [newSymptom, setNewSymptom] = useState("");
+  const [language, setLanguage] = useState("");
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<any>(null);
   const [error, setError] = useState<string | null>(null);
@@ -80,7 +84,7 @@ export default function SymptomChecker() {
     setResult(null);
 
     try {
-      const analysis = await geminiAPI.analyzeSymptomsAndGetDiseases(symptoms);
+      const analysis = await geminiAPI.analyzeSymptomsAndGetDiseases(symptoms,3,language);;
       console.log("Analysis result:", analysis);
       setResult(analysis);
     } catch (err: any) {
@@ -101,6 +105,18 @@ export default function SymptomChecker() {
             Symptom Analyzer
           </h2>
         </div>
+        <Select onValueChange={setLanguage} value={language}>
+          <SelectTrigger className="w-full">
+            <SelectValue placeholder="Select Language" />
+          </SelectTrigger>
+          <SelectContent>
+            {languages.map((lang) => (
+              <SelectItem key={lang} value={lang}>
+                {lang}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
 
         <div className="flex gap-3">
           <Input
