@@ -1,44 +1,50 @@
 import { FileUpload } from "@/components/file-upload";
-import { 
-  Brain, 
-  FileText, 
-  Shield, 
-  Download, 
-  Clock, 
-  UserCog 
+import {
+  Brain,
+  FileText,
+  Shield,
+  Download,
+  Clock,
+  UserCog,
 } from "lucide-react";
 
 const features = [
   {
     icon: Brain,
     title: "AI-Powered Analysis",
-    description: "Advanced AI technology analyzes your medical reports with high accuracy and provides detailed insights."
+    description:
+      "Advanced AI technology analyzes your medical reports with high accuracy and provides detailed insights.",
   },
   {
     icon: FileText,
     title: "Comprehensive Reports",
-    description: "Get detailed breakdowns of test results, health issues, specialist recommendations, and medication guidance."
+    description:
+      "Get detailed breakdowns of test results, health issues, specialist recommendations, and medication guidance.",
   },
   {
     icon: Shield,
     title: "Secure & Private",
-    description: "Your medical data is processed securely and never stored, ensuring complete privacy and confidentiality."
+    description:
+      "Your medical data is processed securely and never stored, ensuring complete privacy and confidentiality.",
   },
   {
     icon: Download,
     title: "PDF Export",
-    description: "Download your analysis results in a well-formatted PDF report for easy sharing with healthcare providers."
+    description:
+      "Download your analysis results in a well-formatted PDF report for easy sharing with healthcare providers.",
   },
   {
     icon: Clock,
     title: "Instant Results",
-    description: "Receive detailed analysis within seconds, helping you understand your medical reports quickly."
+    description:
+      "Receive detailed analysis within seconds, helping you understand your medical reports quickly.",
   },
   {
     icon: UserCog,
     title: "Specialist Guidance",
-    description: "Get recommendations for medical specialists based on your report findings and health conditions."
-  }
+    description:
+      "Get recommendations for medical specialists based on your report findings and health conditions.",
+  },
 ];
 
 export default function Home() {
@@ -51,8 +57,13 @@ export default function Home() {
             Medical Report Analyzer
           </h1>
           <p className="mt-3 text-xl text-gray-500 max-w-2xl mx-auto">
-            Upload your medical report and get an instant AI-powered analysis that helps you understand your health status better.
+            Upload your medical report and get an instant AI-powered analysis
+            that helps you understand your health status better.
           </p>
+        </div>
+
+        <div className="mt-12">
+          <FileUpload />
         </div>
 
         {/* Features Grid */}
@@ -72,18 +83,13 @@ export default function Home() {
                 <h3 className="text-xl font-semibold text-gray-900 mb-2">
                   {feature.title}
                 </h3>
-                <p className="text-gray-600">
-                  {feature.description}
-                </p>
+                <p className="text-gray-600">{feature.description}</p>
               </div>
             ))}
           </div>
         </div>
-        
+
         {/* Upload Section */}
-        <div className="mt-12">
-          <FileUpload />
-        </div>
       </div>
     </main>
   );
