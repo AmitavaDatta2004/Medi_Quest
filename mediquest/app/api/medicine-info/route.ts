@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
-import { GeminiService } from "@/lib/api/gemini";
-import { validateMedicineName } from "@/lib/api/validators";
+import { GeminiService } from "@/lib/api/gemini1";
+import { validateMedicineName } from "@/lib/api/validators1";
 import { getMedicineDetailsPrompt } from "@/lib/api/prompts/medicine-details";
-import { handleAPIError } from "@/lib/api/errors";
+import { handleAPIError } from "@/lib/api/errors1";
 
 export async function POST(req: Request) {
   try {
