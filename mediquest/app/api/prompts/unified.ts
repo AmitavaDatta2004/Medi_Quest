@@ -1,4 +1,8 @@
-export const getUnifiedPrompt = () => `Carefully analyze this medical report image and provide a detailed yet simple explanation of the findings. Your goal is to make the analysis easy to understand for someone without a medical background. Structure your response in JSON format with the following sections, ensuring the information is clear, actionable, and helpful:
+export const getUnifiedPrompt = (language: string) => `Carefully analyze this medical report image and provide a detailed yet simple explanation of the findings. Your goal is to make the analysis easy to understand for someone without a medical background. 
+
+🔹 **IMPORTANT:** The entire response must be generated in **${language}**. Use proper grammar and medical terminology, but ensure the explanation remains easy to understand.
+
+Structure your response in JSON format with the following sections, ensuring the information is clear, actionable, and helpful:
 
 1. **Overall Assessment**:
    - Start with a brief, easy-to-understand summary of the report's main findings.
@@ -31,10 +35,12 @@ export const getUnifiedPrompt = () => `Carefully analyze this medical report ima
    - Provide clear dosage instructions and any important tips (e.g., "Take with food to avoid stomach upset").
    - Mention any possible side effects or interactions with other medications, and what the user should do if they experience them.
 
+**🛑 The entire response must be in ${language}. Do not use English.** If necessary, translate all medical terms into ${language} while keeping their meaning accurate.
+
 Format the response as a JSON string with the following structure:
 {
   "summary": "string - A simple, clear overview of the report's main findings and what they mean for the user.",
-  "criticalFindings": ["string - List of results or conditions that need immediate attention, explained in plain language."],
+  "criticalFindings": ["string - List of results or conditions that need immediate attention, explained in ${language}."],
   "keyFindingsSummary": "string - A brief summary of the most important test results, focusing on what the user needs to know.",
   "abnormalFindings": ["string - List of abnormal results, with simple explanations of what they mean and what to do."],
   "normalFindings": ["string - List of normal results, reassuring the user about aspects of their health that are fine."],
@@ -49,7 +55,5 @@ Format the response as a JSON string with the following structure:
   "prescriptionMedications": ["string - List of prescription medications, with clear explanations of their purpose, dosage, and side effects."],
   "OTCMedications": ["string - List of over-the-counter medications, with simple instructions on how to use them."]
 }
-Note below: There is no need to bold or italisize any word using readme pattern.
 
-
-`;
+🛑 **Remember: The entire output should be in ${language}, and no English should be used.**`;

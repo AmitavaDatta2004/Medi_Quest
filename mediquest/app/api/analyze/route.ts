@@ -24,6 +24,7 @@ export async function POST(request: Request) {
 
     const formData = await request.formData();
     const file = formData.get("file") as File;
+    const language = formData.get("language") as string || "english"; 
 
     // Validate the uploaded file
     validateFile(file);
@@ -34,7 +35,7 @@ export async function POST(request: Request) {
 
     try {
       // Single API call with unified prompt
-      const analysis = await analyzeImage(base64, file.type, getUnifiedPrompt());
+      const analysis = await analyzeImage(base64, file.type, getUnifiedPrompt(language));
 
       // Add metadata
       analysis.metadata = {

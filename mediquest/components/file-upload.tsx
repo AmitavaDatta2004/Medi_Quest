@@ -40,6 +40,7 @@ export function FileUpload() {
   const [loading, setLoading] = useState(false);
   const [analysis, setAnalysis] = useState<AnalysisResponse | null>(null);
   const [uploadProgress, setUploadProgress] = useState(0);
+  const [language, setLanguage] = useState("english");
   const { toast } = useToast();
 
   const handleFileDrop = (e: React.DragEvent<HTMLDivElement>) => {
@@ -93,7 +94,7 @@ export function FileUpload() {
     }
   };
 
-  const analyzeReport = async () => {
+  const analyzeReport = async (selectedLanguage: string) => {
     if (!file) return;
 
     setLoading(true);
@@ -102,6 +103,7 @@ export function FileUpload() {
     try {
       const formData = new FormData();
       formData.append("file", file);
+      formData.append("language", language);
 
       const response = await fetch("/api/analyze", {
         method: "POST",
@@ -114,7 +116,7 @@ export function FileUpload() {
       }
 
       const data: AnalysisResponse = await response.json();
-      
+
       if (data.error) {
         throw new Error(data.error);
       }
@@ -141,12 +143,23 @@ export function FileUpload() {
   return (
     <div className="space-y-6">
       <Card className="p-8">
+        <label className="block text-sm font-medium text-gray-700">Select Language</label>
+        <select
+          className="w-full p-2 border rounded-md mt-2"
+          value={language}
+          onChange={(e) => setLanguage(e.target.value)}
+          disabled={loading}
+        >
+          <option value="english">English</option>
+          <option value="hindi">Hindi</option>
+          <option value="bengali">Bengali</option>
+        </select>
         <div
-          className={`border-2 border-dashed rounded-lg p-12 text-center cursor-pointer transition-colors ${
-            loading
-              ? "border-gray-300 bg-gray-50"
-              : "border-gray-300 hover:border-primary"
-          }`}
+          className={`border-2 border-dashed rounded-lg p-12 text-center cursor-pointer transition-colors ${loading
+
+            ? "border-gray-300 bg-gray-50"
+            : "border-gray-300 hover:border-primary"
+            }`}
           onDragOver={(e) => e.preventDefault()}
           onDrop={handleFileDrop}
           onClick={() => !loading && document.getElementById("file-input")?.click()}
@@ -208,7 +221,7 @@ export function FileUpload() {
         )}
       </Card>
 
-      {analysis && <ReportAnalysis analysis={analysis} />}
+      {analysis && <ReportAnalysis key={language} analysis={analysis} />}
     </div>
   );
 }
