@@ -1,7 +1,16 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono , Inter} from "next/font/google";
+import { Geist, Geist_Mono, Inter } from "next/font/google";
 import { Providers } from "./providers";
 import "./globals.css";
+
+// Clerk setup
+import {
+  ClerkProvider,
+  SignInButton,
+  SignedIn,
+  SignedOut,
+  UserButton,
+} from "@clerk/nextjs";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -13,19 +22,20 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-const inter = Inter({ 
-  subsets: ['latin'],
-  display: 'swap',
+const inter = Inter({
+  subsets: ["latin"],
+  display: "swap",
   preload: true,
   adjustFontFallback: true,
-  fallback: ['system-ui', 'arial'],
-  weight: ['400', '500', '600', '700'],
-  variable: '--font-inter'
+  fallback: ["system-ui", "arial"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-inter",
 });
 
 export const metadata: Metadata = {
-  title: 'MediQuest - AI-Powered Healthcare Solutions',
-  description: 'Decode Your Symptoms, Discover the Right Cure, and Stay Informed! Your go-to source for medicine info, accurate diagnoses, and expert health insights.',
+  title: "MediQuest - AI-Powered Healthcare Solutions",
+  description:
+    "Decode Your Symptoms, Discover the Right Cure, and Stay Informed! Your go-to source for medicine info, accurate diagnoses, and expert health insights.",
 };
 
 export default function RootLayout({
@@ -34,10 +44,18 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body className={inter.className}>
-        <Providers>{children}</Providers>
-      </body>
-    </html>
+    <ClerkProvider>
+      <html lang="en" suppressHydrationWarning>
+        <body className={inter.className}>
+          <SignedOut>
+            <SignInButton />
+          </SignedOut>
+          <SignedIn>
+            <UserButton />
+          </SignedIn>
+          <Providers>{children}</Providers>
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }
