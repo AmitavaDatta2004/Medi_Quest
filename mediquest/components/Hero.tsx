@@ -82,7 +82,7 @@ export default function Hero() {
             animate={{ scale: 1, opacity: 1 }}
             transition={{ duration: 0.8, delay: 0.2 }}
           >
-            Your Health, Our Priority
+            Your Health, Your Priority
           </motion.h1>
           
           <div className="text-xl md:text-3xl mb-12 text-muted-foreground text-purple-950">

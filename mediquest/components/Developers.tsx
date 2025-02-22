@@ -8,25 +8,25 @@ const developers = [
   {
     name: "Amitava Datta",
     role: "Full Stack Developer",
-    image: "https://images.unsplash.com/photo-1633332755192-727a05c4013d?w=400&h=400&fit=crop",
+    image: "/AmitavaDatta.jpg",
     gradient: "from-blue-500 to-cyan-500"
   },
   {
     name: "Pranay De",
     role: "AI Engineer",
-    image: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=400&h=400&fit=crop",
+    image: "/PranayDe.jpg",
     gradient: "from-purple-500 to-pink-500"
   },
   {
     name: "Aitijhya Roy",
     role: "Backend Developer",
-    image: "https://images.unsplash.com/photo-1527980965255-d3b416303d12?w=400&h=400&fit=crop",
+    image: "/AitijhyaRoy.jpg",
     gradient: "from-green-500 to-emerald-500"
   },
   {
     name: "Rudranil Das",
     role: "Frontend Developer",
-    image: "https://images.unsplash.com/photo-1599566150163-29194dcaad36?w=400&h=400&fit=crop",
+    image: "/RudranilDas.jpg",
     gradient: "from-orange-500 to-red-500"
   },
 ];
