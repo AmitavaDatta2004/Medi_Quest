@@ -86,7 +86,7 @@ export default function Navbar() {
               >
                 <Stethoscope className="h-8 w-8 text-primary transition-colors duration-300" />
               </motion.div>
-              <span className="text-2xl font-bold gradient-text">MediCare</span>
+              <span className="text-2xl font-bold gradient-text">MediQuest</span>
             </Link>
           </motion.div>
           

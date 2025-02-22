@@ -7,19 +7,19 @@ import { Github, Linkedin } from "lucide-react";
 const developers = [
   {
     name: "Amitava Datta",
-    role: "Full Stack Developer",
+    role: "Backend Developer",
     image: "/AmitavaDatta.jpg",
     gradient: "from-blue-500 to-cyan-500"
   },
   {
     name: "Pranay De",
-    role: "AI Engineer",
+    role: "ML Engineer",
     image: "/PranayDe.jpg",
     gradient: "from-purple-500 to-pink-500"
   },
   {
     name: "Aitijhya Roy",
-    role: "Backend Developer",
+    role: "UI UX Designer",
     image: "/AitijhyaRoy.jpg",
     gradient: "from-green-500 to-emerald-500"
   },

@@ -82,24 +82,24 @@ export default function Hero() {
             animate={{ scale: 1, opacity: 1 }}
             transition={{ duration: 0.8, delay: 0.2 }}
           >
-            Your Health, Your Priority
+            Your Health, Our Priority
+            <span className="text-xl md:text-3xl mb-12 text-purple-950 dark:text-sky-300">
+              <Typewriter
+                options={{
+                  strings: [
+                    "Analyze Medical Reports with AI",
+                    "Predict Diseases from Symptoms",
+                    "Get Detailed Medicine Information"
+                  ],
+                  autoStart: true,
+                  loop: true,
+                  deleteSpeed: 30,
+                  delay: 80,
+                }}
+              />
+            </span>
           </motion.h1>
           
-          <div className="text-xl md:text-3xl mb-12 text-muted-foreground text-purple-950">
-            <Typewriter
-              options={{
-                strings: [
-                  "Analyze Medical Reports with AI",
-                  "Predict Diseases from Symptoms",
-                  "Get Detailed Medicine Information"
-                ],
-                autoStart: true,
-                loop: true,
-                deleteSpeed: 30,
-                delay: 80,
-              }}
-            />
-          </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto mb-16">
             <motion.div
