@@ -6,6 +6,13 @@ import { Menu, X, Stethoscope, Sun, Moon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useTheme } from "next-themes";
 import { motion, AnimatePresence } from "framer-motion";
+import {
+  ClerkProvider,
+  SignInButton,
+  SignedIn,
+  SignedOut,
+  UserButton,
+} from "@clerk/nextjs";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -28,57 +35,54 @@ export default function Navbar() {
 
   const navVariants = {
     hidden: { opacity: 0, y: -20 },
-    visible: { 
-      opacity: 1, 
+    visible: {
+      opacity: 1,
       y: 0,
       transition: {
         duration: 0.5,
-        staggerChildren: 0.1
-      }
-    }
+        staggerChildren: 0.1,
+      },
+    },
   };
 
   const itemVariants = {
     hidden: { opacity: 0, y: -20 },
-    visible: { opacity: 1, y: 0 }
+    visible: { opacity: 1, y: 0 },
   };
 
   const mobileMenuVariants = {
     hidden: { opacity: 0, height: 0 },
-    visible: { 
-      opacity: 1, 
+    visible: {
+      opacity: 1,
       height: "auto",
       transition: {
         duration: 0.3,
-        staggerChildren: 0.1
-      }
+        staggerChildren: 0.1,
+      },
     },
-    exit: { 
-      opacity: 0, 
+    exit: {
+      opacity: 0,
       height: 0,
-      transition: { duration: 0.3 }
-    }
+      transition: { duration: 0.3 },
+    },
   };
 
   return (
-    <nav 
+    <nav
       className={`fixed w-full z-50 transition-all duration-500 ${
-        isScrolled 
-          ? "bg-background/80 backdrop-blur-xl shadow-lg dark:shadow-primary/5" 
+        isScrolled
+          ? "bg-background/80 backdrop-blur-xl shadow-lg dark:shadow-primary/5"
           : "bg-transparent"
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <motion.div 
+        <motion.div
           className="flex items-center justify-between h-20"
           initial="hidden"
           animate="visible"
           variants={navVariants}
         >
-          <motion.div 
-            className="flex items-center"
-            variants={itemVariants}
-          >
+          <motion.div className="flex items-center" variants={itemVariants}>
             <Link href="/" className="flex items-center space-x-2 group">
               <motion.div
                 whileHover={{ scale: 1.1, rotate: 360 }}
@@ -86,20 +90,32 @@ export default function Navbar() {
               >
                 <Stethoscope className="h-8 w-8 text-primary transition-colors duration-300" />
               </motion.div>
-              <span className="text-2xl font-bold gradient-text">MediQuest</span>
+              <span className="text-2xl font-bold gradient-text">
+                MediQuest
+              </span>
             </Link>
           </motion.div>
-          
+
           <div className="hidden md:flex items-center space-x-8">
-            {["Features", "Report Analyzer", "Disease Predictor", "Medicine Details", "Team"].map((item, index) => (
+            {[
+              "Features",
+              "Report Analyzer",
+              "Disease Predictor",
+              "Medicine Details",
+              "Team",
+            ].map((item, index) => (
               <motion.div
                 key={item}
                 variants={itemVariants}
                 whileHover={{ scale: 1.05 }}
                 className="relative group"
               >
-                <Link 
-                  href={item === "Features" || item === "Team" ? `#${item.toLowerCase()}` : `/${item.toLowerCase().replace(" ", "-")}`} 
+                <Link
+                  href={
+                    item === "Features" || item === "Team"
+                      ? `#${item.toLowerCase()}`
+                      : `/${item.toLowerCase().replace(" ", "-")}`
+                  }
                   className="nav-link text-lg"
                 >
                   {item}
@@ -121,19 +137,39 @@ export default function Navbar() {
                   whileHover={{ rotate: 180 }}
                   transition={{ duration: 0.3 }}
                 >
-                  {theme === "dark" ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
+                  {theme === "dark" ? (
+                    <Sun className="h-5 w-5" />
+                  ) : (
+                    <Moon className="h-5 w-5" />
+                  )}
                 </motion.div>
               </Button>
             </motion.div>
-            <motion.div variants={itemVariants}>
-              <Button 
-                className="rounded-full px-8 bg-gradient-to-r from-primary via-accent to-primary bg-[length:200%_200%] animate-gradient hover:scale-105 transition-transform duration-300"
-              >
+            {/* <motion.div variants={itemVariants}>
+              <Button className="rounded-full px-8 bg-gradient-to-r from-primary via-accent to-primary bg-[length:200%_200%] animate-gradient hover:scale-105 transition-transform duration-300">
                 Get Started
               </Button>
+            </motion.div> */}
+            <motion.div variants={itemVariants}>
+              <Button className="rounded-full px-8 bg-gradient-to-r from-primary via-accent to-primary bg-[length:200%_200%] animate-gradient hover:scale-105 transition-transform duration-300">
+                <SignedOut>
+                  <SignInButton />
+                </SignedOut>
+                <SignedIn>
+                  <UserButton />
+                </SignedIn>
+              </Button>
             </motion.div>
+
+            {/* 
+            <SignedOut>
+            <SignInButton />
+          </SignedOut>
+          <SignedIn>
+            <UserButton />
+          </SignedIn> */}
           </div>
-          
+
           <div className="md:hidden flex items-center space-x-4">
             <motion.div variants={itemVariants}>
               <Button
@@ -142,17 +178,25 @@ export default function Navbar() {
                 onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
                 className="transition-transform duration-300 hover:scale-110"
               >
-                {theme === "dark" ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
+                {theme === "dark" ? (
+                  <Sun className="h-5 w-5" />
+                ) : (
+                  <Moon className="h-5 w-5" />
+                )}
               </Button>
             </motion.div>
-            <motion.button 
+            <motion.button
               variants={itemVariants}
               onClick={() => setIsOpen(!isOpen)}
               className="inline-flex items-center justify-center p-2 rounded-md text-foreground hover:text-primary transition-colors"
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.95 }}
             >
-              {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+              {isOpen ? (
+                <X className="h-6 w-6" />
+              ) : (
+                <Menu className="h-6 w-6" />
+              )}
             </motion.button>
           </div>
         </motion.div>
@@ -160,7 +204,7 @@ export default function Navbar() {
 
       <AnimatePresence>
         {isOpen && (
-          <motion.div 
+          <motion.div
             className="md:hidden"
             initial="hidden"
             animate="visible"
@@ -168,15 +212,25 @@ export default function Navbar() {
             variants={mobileMenuVariants}
           >
             <div className="px-4 pt-2 pb-6 space-y-3 bg-gradient-to-b from-background/95 to-background/80 backdrop-blur-xl border-t border-border/50">
-              {["Features", "Report Analyzer", "Disease Predictor", "Medicine Details", "Team"].map((item, index) => (
+              {[
+                "Features",
+                "Report Analyzer",
+                "Disease Predictor",
+                "Medicine Details",
+                "Team",
+              ].map((item, index) => (
                 <motion.div
                   key={item}
                   variants={itemVariants}
                   whileHover={{ x: 10, scale: 1.02 }}
                   className="relative group"
                 >
-                  <Link 
-                    href={item === "Features" || item === "Team" ? `#${item.toLowerCase()}` : `/${item.toLowerCase().replace(" ", "-")}`}
+                  <Link
+                    href={
+                      item === "Features" || item === "Team"
+                        ? `#${item.toLowerCase()}`
+                        : `/${item.toLowerCase().replace(" ", "-")}`
+                    }
                     className="block px-3 py-2 text-lg nav-link"
                     onClick={() => setIsOpen(false)}
                   >
@@ -184,15 +238,17 @@ export default function Navbar() {
                   </Link>
                 </motion.div>
               ))}
-              <motion.div
-                variants={itemVariants}
-                whileHover={{ scale: 1.02 }}
-              >
-                <Button 
+              <motion.div variants={itemVariants} whileHover={{ scale: 1.02 }}>
+                <Button
                   className="w-full rounded-full mt-4 bg-gradient-to-r from-primary via-accent to-primary bg-[length:200%_200%] animate-gradient"
                   onClick={() => setIsOpen(false)}
                 >
-                  Get Started
+                  <SignedOut>
+                    <SignInButton />
+                  </SignedOut>
+                  <SignedIn>
+                    <UserButton />
+                  </SignedIn>
                 </Button>
               </motion.div>
             </div>
