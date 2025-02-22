@@ -1,4 +1,4 @@
-export const getMedicineDetailsPrompt = (medicineName: string) => `
+export const getMedicineDetailsPrompt = (medicineName: string, language: string) => `
 Provide detailed, factual medical reference information about "${medicineName}" in JSON format. Follow these guidelines strictly:
 
 1. Use only verified medical references and pharmacological databases
@@ -8,7 +8,7 @@ Provide detailed, factual medical reference information about "${medicineName}" 
 5. Include dosage units and measurements
 6. Provide specific, quantifiable information where applicable
 
-Return the data in the following exact structure:
+Return the data in the following exact structure, ensuring the content is provided in "${language}":
 
 {
   "name": "${medicineName}",
@@ -106,4 +106,5 @@ Important Notes:
 7. Use standard medical terminology
 8. Include numerical values where applicable (dosages, percentages, etc)
 9. Keep descriptions clear and concise
-10. Use proper medical units (mg, ml, etc)`;
+10. Use proper medical units (mg, ml, etc)
+11. Ensure all content is translated into "${language}" correctly and contextually.`;

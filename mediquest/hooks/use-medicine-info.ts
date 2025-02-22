@@ -8,7 +8,7 @@ export function useMedicineInfo() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchMedicineInfo = async (medicineName: string) => {
+  const fetchMedicineInfo = async (medicineName: string, selectedLanguage: string) => {
     setIsLoading(true);
     setError(null);
 
@@ -18,7 +18,7 @@ export function useMedicineInfo() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ medicineName }),
+       body: JSON.stringify({ medicineName, language: selectedLanguage }), // Added selectedLanguage
       });
 
       if (!response.ok) {

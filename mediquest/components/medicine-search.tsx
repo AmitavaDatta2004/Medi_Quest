@@ -9,14 +9,18 @@ import { MedicineDetails } from "@/components/medicine-details";
 import { useMedicineInfo } from "@/hooks/use-medicine-info";
 import { motion } from "framer-motion";
 
-export function MedicineSearch() {
+interface MedicineSearchProps {
+  selectedLanguage: string; // Accepting language as a prop
+}
+
+export function MedicineSearch({ selectedLanguage }: MedicineSearchProps) {
   const [medicineName, setMedicineName] = useState("");
   const { fetchMedicineInfo, medicineData, isLoading, error } = useMedicineInfo();
 
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!medicineName.trim()) return;
-    await fetchMedicineInfo(medicineName);
+    await fetchMedicineInfo(medicineName, selectedLanguage); 
   };
 
   return (
@@ -29,7 +33,7 @@ export function MedicineSearch() {
         <Card className="p-6 backdrop-blur-lg bg-white/80 shadow-xl hover:shadow-2xl transition-all duration-300 border-t border-l border-white/20">
           <form onSubmit={handleSearch} className="flex gap-4 mb-8">
             <Input
-              placeholder="Enter medicine name..."
+              placeholder={`Enter medicine name (${selectedLanguage})...`} 
               value={medicineName}
               onChange={(e) => setMedicineName(e.target.value)}
               className="flex-1 bg-white/50 backdrop-blur-sm border-white/20 focus:border-blue-400 text-black transition-all duration-300"
