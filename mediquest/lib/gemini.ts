@@ -29,7 +29,7 @@ class RateLimitedGeminiAPI {
       try {
         console.log(`Sending symptoms to API:`, symptoms);
 
-        const response = await fetch('/api/analyze', {
+        const response = await fetch('/api/disease', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
