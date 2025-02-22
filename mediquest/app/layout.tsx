@@ -13,7 +13,15 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-const inter = Inter({ subsets: ['latin'] });
+const inter = Inter({ 
+  subsets: ['latin'],
+  display: 'swap',
+  preload: true,
+  adjustFontFallback: true,
+  fallback: ['system-ui', 'arial'],
+  weight: ['400', '500', '600', '700'],
+  variable: '--font-inter'
+});
 
 export const metadata: Metadata = {
   title: 'MediQuest - AI-Powered Healthcare Solutions',
