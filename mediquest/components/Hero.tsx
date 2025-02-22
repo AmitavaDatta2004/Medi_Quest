@@ -69,7 +69,7 @@ export default function Hero() {
       
       <div className="absolute inset-0 bg-gradient-to-b from-background/0 via-background/50 to-background" />
       
-      <div className="container mx-auto px-4 z-10">
+      <div className="mt-36 mb-10 container mx-auto px-4 z-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -85,7 +85,7 @@ export default function Hero() {
             Your Health, Our Priority
           </motion.h1>
           
-          <div className="text-xl md:text-3xl mb-12 text-muted-foreground font-light">
+          <div className="text-xl md:text-3xl mb-12 text-muted-foreground text-purple-950">
             <Typewriter
               options={{
                 strings: [
