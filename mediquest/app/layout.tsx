@@ -33,8 +33,10 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang="en" suppressHydrationWarning>
         <body className={inter.className}>
+          <Providers>
           <Navbar/>
-          <Providers>{children}</Providers>
+            {children}
+            </Providers>
         </body>
       </html>
     </ClerkProvider>
