@@ -7,7 +7,6 @@ import { Button } from "@/components/ui/button";
 import { useTheme } from "next-themes";
 import { motion, AnimatePresence } from "framer-motion";
 import {
-  ClerkProvider,
   SignInButton,
   SignedIn,
   SignedOut,
@@ -108,7 +107,7 @@ export default function Navbar() {
               "Disease Predictor",
               "Medicine Details",
               "Team",
-            ].map((item, index) => (
+            ].map((item) => (
               <motion.div
                 key={item}
                 variants={itemVariants}
@@ -223,7 +222,7 @@ export default function Navbar() {
                 "Disease Predictor",
                 "Medicine Details",
                 "Team",
-              ].map((item, index) => (
+              ].map((item) => (
                 <motion.div
                   key={item}
                   variants={itemVariants}

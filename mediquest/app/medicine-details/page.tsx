@@ -62,6 +62,10 @@ export default function Home() {
             <option value="English">English</option>
             <option value="Bengali">Bengali</option>
             <option value="Hindi">Hindi</option>
+            <option value="Urdu">Urdu</option>
+            <option value="Tamil">Tamil</option>
+            <option value="French">French</option>
+            <option value="Spanish">Spanish</option>
           </select>
         </motion.div>
 

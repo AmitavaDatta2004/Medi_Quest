@@ -17,7 +17,6 @@ import {
   Apple,
   Activity,
   FileDown,
-  Thermometer,
   Stethoscope,
   ShieldAlert,
   Shield,
@@ -41,7 +40,7 @@ const commonSymptoms = [
   "Sore Throat",
 ];
 
-const languages = ["English", "Spanish", "French", "German", "Chinese", "Hindi", "Bengali"];
+const languages = ["English", "Spanish", "French", "German", "Chinese", "Hindi", "Bengali","Tamil","Urdu"];
 
 export default function SymptomChecker() {
   const [symptoms, setSymptoms] = useState<string[]>([]);
