@@ -213,7 +213,7 @@ export function MedicineDetails({ data }: { data: MedicineData }) {
 
       <Tabs defaultValue="overview" className="w-full">
         <TabsList className="grid w-full grid-cols-2 md:grid-cols-5 bg-blue-100/50 p-1 rounded-lg text-black">
-          {["overview", "usage", "effects", "alternatives", "pricing"].map((tab, index) => (
+          {["overview", "usage", "effects", "alternatives", "pricing"].map((tab) => (
             <motion.div key={tab} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
               <TabsTrigger
                 value={tab}
