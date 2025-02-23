@@ -42,12 +42,37 @@ const commonSymptoms = [
 
 const languages = ["English", "Spanish", "French", "German", "Chinese", "Hindi", "Bengali","Tamil","Urdu"];
 
+interface Disease {
+  name: string;
+  probability: number;
+  description: string;
+  causes?: string[];
+  precautions?: string[];
+}
+
+interface Medications {
+  otc: string[];
+  prescribed: string[];
+}
+
+interface DietPlan {
+  recommended: string[];
+  avoid: string[];
+}
+
+interface AnalysisResult {
+  diseases: Disease[];
+  medications: Medications;
+  dietPlan: DietPlan;
+  workouts: string[];
+}
+
 export default function SymptomChecker() {
   const [symptoms, setSymptoms] = useState<string[]>([]);
   const [newSymptom, setNewSymptom] = useState("");
   const [language, setLanguage] = useState("");
   const [loading, setLoading] = useState(false);
-  const [result, setResult] = useState<any>(null);
+  const [result, setResult] = useState<AnalysisResult | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   const handleAddSymptom = () => {
@@ -72,22 +97,26 @@ export default function SymptomChecker() {
       setError("Please add at least one symptom.");
       return;
     }
-
+  
     if (!process.env.NEXT_PUBLIC_GEMINI_API_KEY) {
       setError("Gemini API key is not configured. Please set NEXT_PUBLIC_GEMINI_API_KEY in your environment variables.");
       return;
     }
-
+  
     setLoading(true);
     setError(null);
     setResult(null);
-
+  
     try {
-      const analysis = await geminiAPI.analyzeSymptomsAndGetDiseases(symptoms,3,language);;
+      const analysis: AnalysisResult = await geminiAPI.analyzeSymptomsAndGetDiseases(symptoms, 3, language);
       console.log("Analysis result:", analysis);
       setResult(analysis);
-    } catch (err: any) {
-      setError(err.message || "Failed to analyze symptoms. Please try again.");
+    } catch (err: unknown) { // <-- Updated line
+      if (err instanceof Error) {
+        setError(err.message || "Failed to analyze symptoms. Please try again.");
+      } else {
+        setError("Failed to analyze symptoms. Please try again.");
+      }
       console.error("Error fetching analysis:", err);
     } finally {
       setLoading(false);
@@ -236,7 +265,7 @@ export default function SymptomChecker() {
               </TabsList>
 
               <TabsContent value="diseases" className="space-y-6">
-                {result.diseases?.map((disease: any, index: number) => (
+                {result.diseases?.map((disease: Disease, index: number) => (
                   <div key={index} className="gradient-border">
                     <Card className="p-6 hover:shadow-lg transition-shadow bg-background/50 backdrop-blur-sm">
                       <div className="flex items-start justify-between mb-6">
@@ -268,7 +297,7 @@ export default function SymptomChecker() {
                         {disease.description}
                       </p>
 
-                      {disease.causes?.length > 0 && (
+                      {disease.causes && disease.causes.length > 0 && (
                         <div className="space-y-4 bg-primary/5 p-6 rounded-xl border border-primary/10">
                           <h4 className="font-semibold flex items-center text-lg bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent">
                             <ShieldAlert className="h-5 w-5 mr-2 text-primary" />
@@ -292,7 +321,7 @@ export default function SymptomChecker() {
               </TabsContent>
 
               <TabsContent value="precautions" className="space-y-6">
-                {result.diseases?.map((disease: any, index: number) => (
+                {result.diseases?.map((disease: Disease, index: number) => (
                   <div key={index} className="gradient-border">
                     <Card className="p-6 bg-background/50 backdrop-blur-sm">
                       <div className="space-y-6">
