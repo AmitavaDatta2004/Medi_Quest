@@ -3,7 +3,7 @@ export class APIError extends Error {
     message: string,
     public statusCode: number,
     public code: string,
-    public details?: any
+    public details?: unknown // Changed from `any` to `unknown`
   ) {
     super(message);
     this.name = 'APIError';
@@ -11,13 +11,13 @@ export class APIError extends Error {
 }
 
 export class ValidationError extends APIError {
-  constructor(message: string, details?: any) {
+  constructor(message: string, details?: unknown) { // Changed from `any` to `unknown`
     super(message, 400, 'VALIDATION_ERROR', details);
   }
 }
 
 export class GeminiError extends APIError {
-  constructor(message: string, details?: any) {
+  constructor(message: string, details?: unknown) { // Changed from `any` to `unknown`
     super(message, 500, 'GEMINI_ERROR', details);
   }
 }
