@@ -8,7 +8,7 @@ export async function POST(req: Request) {
   try {
     // Validate request body
     const body = await req.json();
-    const { medicineName, language } = body;
+    const { medicineName, language, location } = body;
 
     // Validate medicine name
     validateMedicineName({ medicineName });
@@ -16,8 +16,8 @@ export async function POST(req: Request) {
     // Initialize Gemini service
     const geminiService = new GeminiService(process.env.GEMINI_API_KEY!);
 
-    // Generate prompt with language selection
-    const prompt = getMedicineDetailsPrompt(medicineName, language);
+    // Generate prompt including location
+    const prompt = getMedicineDetailsPrompt(medicineName, language, location);
     const medicineData = await geminiService.generateContent(prompt);
 
     return NextResponse.json(medicineData);
