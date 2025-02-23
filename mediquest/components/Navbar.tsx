@@ -88,7 +88,12 @@ export default function Navbar() {
                 whileHover={{ scale: 1.1, rotate: 360 }}
                 transition={{ duration: 0.5 }}
               >
-                <Stethoscope className="h-8 w-8 text-primary transition-colors duration-300" />
+                <img 
+                  src="logo-mediquest.png" 
+                  alt="logo" 
+                  className="h-16 transition-transform duration-300 hover:rotate-6 hover:scale-105"
+                />
+
               </motion.div>
               <span className="text-2xl font-bold gradient-text">
                 MediQuest
