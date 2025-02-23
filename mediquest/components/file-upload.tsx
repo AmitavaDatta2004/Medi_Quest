@@ -153,6 +153,10 @@ export function FileUpload() {
           <option value="english">English</option>
           <option value="hindi">Hindi</option>
           <option value="bengali">Bengali</option>
+          <option value="Urdu">Urdu</option>
+          <option value="Tamil">Tamil</option>
+          <option value="French">French</option>
+          <option value="Spanish">Spanish</option>
         </select>
         <div
           className={`border-2 border-dashed rounded-lg p-12 text-center cursor-pointer transition-colors ${loading
