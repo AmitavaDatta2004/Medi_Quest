@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { Providers } from "./providers";
 import "./globals.css";
+import Navbar from "@/components/Navbar";
 
 // Clerk setup
 import { ClerkProvider } from "@clerk/nextjs";
@@ -32,6 +33,7 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang="en" suppressHydrationWarning>
         <body className={inter.className}>
+          <Navbar/>
           <Providers>{children}</Providers>
         </body>
       </html>
