@@ -41,7 +41,7 @@ export default function Home() {
       </div>
 
       {/* Hero Section */}
-      <section className="container mx-auto px-4 py-16 text-center relative">
+      <section className="mt-20 container mx-auto px-4 py-16 text-center relative">
         <div className="flex justify-center mb-6">
           <div className="relative">
             <Heart className="h-16 w-16 text-primary animate-pulse" />
