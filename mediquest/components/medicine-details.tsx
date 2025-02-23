@@ -23,7 +23,7 @@ import { motion, AnimatePresence } from "framer-motion"
 import jsPDF from "jspdf"
 
 export function MedicineDetails({ data }: { data: MedicineData }) {
-  const [activeTab, setActiveTab] = useState("overview")
+  const [activeTab] = useState("overview")
   const [key, setKey] = useState(0)
 
   useEffect(() => {

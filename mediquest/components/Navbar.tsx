@@ -2,7 +2,8 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { Menu, X, Stethoscope, Sun, Moon } from "lucide-react";
+import Image from "next/image"; // Import the Image component
+import { Menu, X, Sun, Moon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useTheme } from "next-themes";
 import { motion, AnimatePresence } from "framer-motion";
@@ -87,12 +88,13 @@ export default function Navbar() {
                 whileHover={{ scale: 1.1, rotate: 360 }}
                 transition={{ duration: 0.5 }}
               >
-                <img 
-                  src="logo-mediquest.png" 
-                  alt="logo" 
+                <Image
+                  src="/logo-mediquest.png" // Ensure the image is in the public folder
+                  alt="logo"
+                  width={64} // Set the width
+                  height={64} // Set the height
                   className="h-16 transition-transform duration-300 hover:rotate-6 hover:scale-105"
                 />
-
               </motion.div>
               <span className="text-2xl font-bold gradient-text">
                 MediQuest
@@ -149,11 +151,6 @@ export default function Navbar() {
                 </motion.div>
               </Button>
             </motion.div>
-            {/* <motion.div variants={itemVariants}>
-              <Button className="rounded-full px-8 bg-gradient-to-r from-primary via-accent to-primary bg-[length:200%_200%] animate-gradient hover:scale-105 transition-transform duration-300">
-                Get Started
-              </Button>
-            </motion.div> */}
             <motion.div variants={itemVariants}>
               <Button className="rounded-full px-8 bg-gradient-to-r from-primary via-accent to-primary bg-[length:200%_200%] animate-gradient hover:scale-105 transition-transform duration-300">
                 <SignedOut>
@@ -164,14 +161,6 @@ export default function Navbar() {
                 </SignedIn>
               </Button>
             </motion.div>
-
-            {/* 
-            <SignedOut>
-            <SignInButton />
-          </SignedOut>
-          <SignedIn>
-            <UserButton />
-          </SignedIn> */}
           </div>
 
           <div className="md:hidden flex items-center space-x-4">
