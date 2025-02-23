@@ -30,27 +30,48 @@ const styles = StyleSheet.create({
     marginBottom: 5,
     lineHeight: 1.5,
   },
-  list: {
-    marginLeft: 20,
-  },
   listItem: {
     fontSize: 12,
     marginBottom: 3,
   },
 });
 
-export default function HealthReport({
-  data = {}, // Default to an empty object
-  symptoms = [],
-}: {
-  data: any;
+interface Disease {
+  name: string;
+  probability: number;
+  description: string;
+  causes?: string[];
+  precautions?: string[];
+}
+
+interface Medications {
+  otc: string[];
+  prescribed: string[];
+}
+
+interface DietPlan {
+  recommended: string[];
+  avoid: string[];
+}
+
+interface HealthData {
+  diseases?: Disease[];
+  medications?: Medications;
+  dietPlan?: DietPlan;
+  workouts?: string[];
+  generalPrecautions?: string[];
+}
+
+interface HealthReportProps {
+  data: HealthData;
   symptoms: string[];
-}) {
-  // Ensure all properties exist and are arrays
+}
+
+export default function HealthReport({ data, symptoms }: HealthReportProps) {
   const diseases = data.diseases || [];
   const medications = data.medications || { otc: [], prescribed: [] };
-  const dietPlan = data.dietPlan || { recommended: [], avoid: [] };
-  const workouts = data.workouts || [];
+  // const dietPlan = data.dietPlan || { recommended: [], avoid: [] };
+  // const workouts = data.workouts || [];
   const generalPrecautions = data.generalPrecautions || [];
 
   return (
@@ -58,7 +79,6 @@ export default function HealthReport({
       <Page size="A4" style={styles.page}>
         <Text style={styles.title}>Health Analysis Report</Text>
 
-        {/* Symptoms */}
         <View style={styles.section}>
           <Text style={styles.heading}>Reported Symptoms</Text>
           {symptoms.length > 0 ? (
@@ -72,20 +92,18 @@ export default function HealthReport({
           )}
         </View>
 
-        {/* Diseases */}
         <View style={styles.section}>
           <Text style={styles.heading}>Potential Conditions</Text>
           {diseases.length > 0 ? (
-            diseases.map((disease: any, index: number) => (
+            diseases.map((disease, index) => (
               <View key={index} style={{ marginBottom: 10 }}>
                 <Text style={styles.subheading}>
                   {disease.name} ({Math.round(disease.probability * 100)}% probability)
                 </Text>
                 <Text style={styles.text}>{disease.description}</Text>
-                
                 <Text style={styles.subheading}>Causes:</Text>
-                {disease.causes?.length > 0 ? (
-                  disease.causes.map((cause: string, i: number) => (
+                {disease.causes?.length ? (
+                  disease.causes.map((cause, i) => (
                     <Text key={i} style={styles.listItem}>
                       • {cause}
                     </Text>
@@ -95,8 +113,8 @@ export default function HealthReport({
                 )}
 
                 <Text style={styles.subheading}>Precautions:</Text>
-                {disease.precautions?.length > 0 ? (
-                  disease.precautions.map((precaution: string, i: number) => (
+                {disease.precautions?.length ? (
+                  disease.precautions.map((precaution, i) => (
                     <Text key={i} style={styles.listItem}>
                       • {precaution}
                     </Text>
@@ -111,11 +129,10 @@ export default function HealthReport({
           )}
         </View>
 
-        {/* General Precautions */}
         <View style={styles.section}>
           <Text style={styles.heading}>General Preventive Measures</Text>
           {generalPrecautions.length > 0 ? (
-            generalPrecautions.map((precaution: string, index: number) => (
+            generalPrecautions.map((precaution, index) => (
               <Text key={index} style={styles.listItem}>
                 • {precaution}
               </Text>
@@ -125,12 +142,11 @@ export default function HealthReport({
           )}
         </View>
 
-        {/* Medications */}
         <View style={styles.section}>
           <Text style={styles.heading}>Recommended Medications</Text>
           <Text style={styles.subheading}>Over-the-Counter:</Text>
           {medications.otc.length > 0 ? (
-            medications.otc.map((med: string, index: number) => (
+            medications.otc.map((med, index) => (
               <Text key={index} style={styles.listItem}>
                 • {med}
               </Text>
@@ -141,7 +157,7 @@ export default function HealthReport({
 
           <Text style={styles.subheading}>Prescription Medications:</Text>
           {medications.prescribed.length > 0 ? (
-            medications.prescribed.map((med: string, index: number) => (
+            medications.prescribed.map((med, index) => (
               <Text key={index} style={styles.listItem}>
                 • {med}
               </Text>
@@ -149,53 +165,6 @@ export default function HealthReport({
           ) : (
             <Text style={styles.text}>No prescription medications suggested.</Text>
           )}
-        </View>
-
-        {/* Diet Plan */}
-        <View style={styles.section}>
-          <Text style={styles.heading}>Diet Recommendations</Text>
-          <Text style={styles.subheading}>Recommended Foods:</Text>
-          {dietPlan.recommended.length > 0 ? (
-            dietPlan.recommended.map((food: string, index: number) => (
-              <Text key={index} style={styles.listItem}>
-                • {food}
-              </Text>
-            ))
-          ) : (
-            <Text style={styles.text}>No diet recommendations.</Text>
-          )}
-
-          <Text style={styles.subheading}>Foods to Avoid:</Text>
-          {dietPlan.avoid.length > 0 ? (
-            dietPlan.avoid.map((food: string, index: number) => (
-              <Text key={index} style={styles.listItem}>
-                • {food}
-              </Text>
-            ))
-          ) : (
-            <Text style={styles.text}>No food restrictions.</Text>
-          )}
-        </View>
-
-        {/* Workouts */}
-        <View style={styles.section}>
-          <Text style={styles.heading}>Recommended Exercises</Text>
-          {workouts.length > 0 ? (
-            workouts.map((workout: string, index: number) => (
-              <Text key={index} style={styles.listItem}>
-                • {workout}
-              </Text>
-            ))
-          ) : (
-            <Text style={styles.text}>No specific workout recommendations.</Text>
-          )}
-        </View>
-
-        {/* Disclaimer */}
-        <View style={styles.section}>
-          <Text style={[styles.text, { fontSize: 10, color: "#666" }]}>
-            Disclaimer: This report is generated based on AI analysis and should not be considered as professional medical advice. Please consult with healthcare professionals for accurate diagnosis and treatment.
-          </Text>
         </View>
       </Page>
     </Document>
