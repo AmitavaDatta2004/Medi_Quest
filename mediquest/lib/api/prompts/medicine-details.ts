@@ -1,4 +1,4 @@
-export const getMedicineDetailsPrompt = (medicineName: string, language: string) => `
+export const getMedicineDetailsPrompt = (medicineName: string, language: string, location: string) => `
 Provide detailed, factual medical reference information about "${medicineName}" in JSON format. Follow these guidelines strictly:
 
 1. Use only verified medical references and pharmacological databases
@@ -7,6 +7,7 @@ Provide detailed, factual medical reference information about "${medicineName}" 
 4. Use standard medical terminology
 5. Include dosage units and measurements
 6. Provide specific, quantifiable information where applicable
+7. Include **pharmacy names** in "${location}".
 
 Return the data in the following exact structure, ensuring the content is provided in "${language}":
 
@@ -93,6 +94,36 @@ Return the data in the following exact structure, ensuring the content is provid
   "manufacturer": {
     "name": "Manufacturing company name",
     "country": "Country of origin"
+  },
+  "nearbyPharmacies": {
+    "location": "${location}",
+    "pharmacies": [
+      {
+        "name": "Pharmacy Name 1",
+        "address": "Complete address",
+        "contact": "Phone number",
+      },
+      {
+        "name": "Pharmacy Name 2",
+        "address": "Complete address",
+        "contact": "Phone number",
+      },
+      {
+        "name": "Pharmacy Name 3",
+        "address": "Complete address",
+        "contact": "Phone number",
+      },
+      {
+        "name": "Pharmacy Name 4",
+        "address": "Complete address",
+        "contact": "Phone number",
+      },
+      {
+        "name": "Pharmacy Name 5",
+        "address": "Complete address",
+        "contact": "Phone number",
+      }
+    ]
   }
 }
 

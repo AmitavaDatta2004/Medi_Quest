@@ -19,57 +19,41 @@ export class GeminiService {
       const result = await this.model.generateContent({
         contents: [{ role: "user", parts: [{ text: prompt }] }],
         generationConfig: {
-          temperature: 0.1, // Lower temperature for more consistent outputs
+          temperature: 0.1,
           topK: 20,
           topP: 0.8,
           maxOutputTokens: 2048,
         },
         safetySettings: [
-          {
-            category: "HARM_CATEGORY_HARASSMENT",
-            threshold: "BLOCK_MEDIUM_AND_ABOVE",
-          },
-          {
-            category: "HARM_CATEGORY_HATE_SPEECH",
-            threshold: "BLOCK_MEDIUM_AND_ABOVE",
-          },
-          {
-            category: "HARM_CATEGORY_SEXUALLY_EXPLICIT",
-            threshold: "BLOCK_MEDIUM_AND_ABOVE",
-          },
-          {
-            category: "HARM_CATEGORY_DANGEROUS_CONTENT",
-            threshold: "BLOCK_MEDIUM_AND_ABOVE",
-          },
+          { category: "HARM_CATEGORY_HARASSMENT", threshold: "BLOCK_MEDIUM_AND_ABOVE" },
+          { category: "HARM_CATEGORY_HATE_SPEECH", threshold: "BLOCK_MEDIUM_AND_ABOVE" },
+          { category: "HARM_CATEGORY_SEXUALLY_EXPLICIT", threshold: "BLOCK_MEDIUM_AND_ABOVE" },
+          { category: "HARM_CATEGORY_DANGEROUS_CONTENT", threshold: "BLOCK_MEDIUM_AND_ABOVE" },
         ],
       });
 
       const response = await result.response;
       const text = response.text();
-      
+
       try {
         const jsonMatch = text.match(/\{[\s\S]*\}/);
         if (!jsonMatch) {
           throw new GeminiError('Failed to parse medicine information - Invalid response format');
         }
-        
-        const parsedData = JSON.parse(jsonMatch[0]);
-        
-        // Deep validation and sanitization of the response
-        const validateArray = (arr: any[] | undefined, defaultValue: string[]): string[] => {
-          return Array.isArray(arr) ? arr.map(item => String(item || '')).filter(Boolean) : defaultValue;
-        };
 
-        const validateString = (str: any, defaultValue: string): string => {
-          return typeof str === 'string' ? str : defaultValue;
-        };
+        const parsedData = JSON.parse(jsonMatch[0]);
+
+        const validateArray = (arr: any[] | undefined, defaultValue: string[]): string[] =>
+          Array.isArray(arr) ? arr.map(item => String(item || '')).filter(Boolean) : defaultValue;
+
+        const validateString = (str: any, defaultValue: string): string =>
+          typeof str === 'string' ? str : defaultValue;
 
         const validateNumber = (num: any, defaultValue: number): number => {
           const parsed = Number(num);
           return !isNaN(parsed) ? parsed : defaultValue;
         };
 
-        // Validate and sanitize the entire response structure
         const validatedData: MedicineData = {
           name: validateString(parsedData.name, ''),
           genericName: validateString(parsedData.genericName, ''),
@@ -119,13 +103,8 @@ export class GeminiService {
             averageRetailPrice: validateString(parsedData.price?.averageRetailPrice, ''),
             unitPrice: validateString(parsedData.price?.unitPrice, ''),
           },
-          substitutes: Array.isArray(parsedData.substitutes) 
-            ? parsedData.substitutes.map((sub: { 
-                name?: string; 
-                genericName?: string; 
-                price?: string; 
-                comparisonNotes?: string; 
-              }) => ({
+          substitutes: Array.isArray(parsedData.substitutes)
+            ? parsedData.substitutes.map(sub => ({
                 name: validateString(sub?.name, ''),
                 genericName: validateString(sub?.genericName, ''),
                 price: validateString(sub?.price, ''),
@@ -137,6 +116,16 @@ export class GeminiService {
           manufacturer: {
             name: validateString(parsedData.manufacturer?.name, ''),
             country: validateString(parsedData.manufacturer?.country, ''),
+          },
+          nearbyPharmacies: {
+            location: validateString(parsedData.nearbyPharmacies?.location, ''),
+            pharmacies: Array.isArray(parsedData.nearbyPharmacies?.pharmacies)
+              ? parsedData.nearbyPharmacies.pharmacies.map(pharmacy => ({
+                  name: validateString(pharmacy?.name, ''),
+                  address: validateString(pharmacy?.address, ''),
+                  contact: validateString(pharmacy?.contact, ''),
+                }))
+              : [],
           },
         };
 

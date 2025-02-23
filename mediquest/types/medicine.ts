@@ -59,4 +59,12 @@ export interface MedicineData {
     name: string;
     country: string;
   };
+  nearbyPharmacies: {
+    location: string;
+    pharmacies: Array<{
+      name: string;
+      address: string;
+      contact: string;
+    }>;
+  };
 }
