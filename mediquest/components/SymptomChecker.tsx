@@ -17,7 +17,6 @@ import {
   Apple,
   Activity,
   FileDown,
-  Thermometer,
   Stethoscope,
   ShieldAlert,
   Shield,

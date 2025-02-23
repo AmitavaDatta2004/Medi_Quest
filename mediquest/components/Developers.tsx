@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Image from "next/image"; // ✅ Import Next.js Image component
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Github, Linkedin } from "lucide-react";
 
@@ -50,7 +51,7 @@ export default function Developers() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {developers.map((developer, index) => (
             <motion.div
-              key={index}
+              key={developer.name} // ✅ Using developer's name as a key instead of index (better for React)
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: index * 0.2 }}
@@ -60,10 +61,13 @@ export default function Developers() {
                   <div className="relative w-40 h-40 mx-auto mb-6">
                     <div className={`absolute inset-0 bg-gradient-to-br ${developer.gradient} rounded-full blur-lg opacity-50`} />
                     <div className="relative w-full h-full overflow-hidden rounded-full ring-4 ring-background">
-                      <img
+                      <Image
                         src={developer.image}
                         alt={developer.name}
+                        width={160} // ✅ Provide width
+                        height={160} // ✅ Provide height
                         className="w-full h-full object-cover transition-transform duration-300 hover:scale-110"
+                        priority // ✅ Optimize loading
                       />
                     </div>
                   </div>

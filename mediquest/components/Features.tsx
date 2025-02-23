@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { FileSearch, Brain, Pill, CheckCircle2, Stethoscope, Clock, Shield, UserCog, HeartPulse, Microscope, Syringe, Activity } from "lucide-react";
+import { FileSearch, Brain, Pill, Stethoscope, Clock, Shield, UserCog, HeartPulse, Microscope, Syringe, Activity } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 const features = [
