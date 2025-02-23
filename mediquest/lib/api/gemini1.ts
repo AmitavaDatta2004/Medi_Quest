@@ -120,7 +120,12 @@ export class GeminiService {
             unitPrice: validateString(parsedData.price?.unitPrice, ''),
           },
           substitutes: Array.isArray(parsedData.substitutes) 
-            ? parsedData.substitutes.map(sub => ({
+            ? parsedData.substitutes.map((sub: { 
+                name?: string; 
+                genericName?: string; 
+                price?: string; 
+                comparisonNotes?: string; 
+              }) => ({
                 name: validateString(sub?.name, ''),
                 genericName: validateString(sub?.genericName, ''),
                 price: validateString(sub?.price, ''),
