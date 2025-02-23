@@ -39,7 +39,7 @@ Structure your response in JSON format with the following sections, ensuring the
 
 Format the response as a JSON string with the following structure:
 {
-  "summary": "string - A simple, clear overview of the report's main findings and what they mean for the user.",
+  "summary": "string - A simple, clear overview of the report's main findings and what they mean for the user in detail. Include the key points of the report.",
   "criticalFindings": ["string - List of results or conditions that need immediate attention, explained in ${language}."],
   "keyFindingsSummary": "string - A brief summary of the most important test results, focusing on what the user needs to know.",
   "abnormalFindings": ["string - List of abnormal results, with simple explanations of what they mean and what to do."],

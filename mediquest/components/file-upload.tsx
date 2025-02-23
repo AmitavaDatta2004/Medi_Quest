@@ -94,7 +94,7 @@ export function FileUpload() {
     }
   };
 
-  const analyzeReport = async (selectedLanguage: string) => {
+  const analyzeReport = async () => {
     if (!file) return;
 
     setLoading(true);
@@ -221,7 +221,29 @@ export function FileUpload() {
         )}
       </Card>
 
-      {analysis && <ReportAnalysis key={language} analysis={analysis} />}
+      {analysis && (
+        <ReportAnalysis
+          key={language}
+          analysis={{
+            ...analysis,
+            summary: analysis.summary || "",
+            criticalFindings: analysis.criticalFindings || [],
+            keyFindingsSummary: analysis.keyFindingsSummary || "",
+            abnormalFindings: analysis.abnormalFindings || [],
+            normalFindings: analysis.normalFindings || [],
+            healthIssuesSummary: analysis.healthIssuesSummary || "",
+            commonHealthIssues: analysis.commonHealthIssues || [],
+            severeHealthIssues: analysis.severeHealthIssues || [],
+            specialistsSummary: analysis.specialistsSummary || "",
+            urgentSpecialists: analysis.urgentSpecialists || [],
+            soonSpecialists: analysis.soonSpecialists || [],
+            routineSpecialists: analysis.routineSpecialists || [],
+            medicationsSummary: analysis.medicationsSummary || "",
+            prescriptionMedications: analysis.prescriptionMedications || [],
+            OTCMedications: analysis.OTCMedications || [],
+          }}
+        />
+      )}
     </div>
   );
 }
