@@ -45,7 +45,7 @@ export async function POST(request: Request) {
       Symptoms: ${symptoms.join(", ")}
       
       Please provide:
-      - Top 3 possible diseases with probability scores
+      - Top 5 possible diseases with probability scores
       - Description, causes, risk factors, and precautions for each disease
       - Recommended medications (OTC & prescribed)
       - Suggested diet plan and exercises
