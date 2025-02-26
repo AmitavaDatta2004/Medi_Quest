@@ -98,7 +98,6 @@ async function retryWithExponentialBackoff<T>(
   }
 }
 
-
 // JSON Cleanup Utility
 function cleanJsonResponse(text: string): string {
   const jsonMatch = text.match(/```(?:json)?\s*({[\s\S]*?})\s*```/);

@@ -29,9 +29,10 @@ interface ReportAnalysisProps {
     prescriptionMedications: string[];
     OTCMedications: string[];
   };
+  location: string;
 }
 
-export function ReportAnalysis({ analysis }: ReportAnalysisProps) {
+export function ReportAnalysis({ analysis, location }: ReportAnalysisProps) {
   const handleDownload = async () => {
     const pdfBlob = await generatePDF(analysis);
     const url = URL.createObjectURL(pdfBlob);
@@ -42,6 +43,25 @@ export function ReportAnalysis({ analysis }: ReportAnalysisProps) {
     a.click();
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
+  };
+
+  const renderDoctors = (specialists: string[]) => {
+    return specialists.map((specialist, index) => {
+      const [specialty, ...doctors] = specialist.split(":");
+      return (
+        <div key={index} className="p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg mb-4">
+          <h5 className="font-semibold text-blue-700 dark:text-blue-400 mb-3">{specialty}</h5>
+          <ul className="space-y-2">
+            {doctors.slice(0, 5).map((doctor, idx) => (
+              <li key={idx} className="flex items-start gap-3 text-blue-700 dark:text-blue-400">
+                <span className="inline-block w-2 h-2 mt-2 rounded-full bg-blue-500" />
+                <span>{doctor}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      );
+    });
   };
 
   return (
@@ -168,7 +188,7 @@ export function ReportAnalysis({ analysis }: ReportAnalysisProps) {
             <AccordionTrigger className="flex items-center gap-2 p-4 bg-indigo-50 dark:bg-indigo-900/20 rounded-lg hover:bg-indigo-100 dark:hover:bg-indigo-900/30 transition-all duration-200">
               <div className="flex-1 text-left">
                 <h4 className="text-xl font-semibold text-indigo-700 dark:text-indigo-400">Recommended Specialists</h4>
-                <p className="text-sm text-indigo-600 dark:text-indigo-300">Medical professionals to consult</p>
+                <p className="text-sm text-indigo-600 dark:text-indigo-300">Medical professionals to consult in {location}</p>
               </div>
             </AccordionTrigger>
             <AccordionContent className="pt-4 px-4">
@@ -177,40 +197,19 @@ export function ReportAnalysis({ analysis }: ReportAnalysisProps) {
                 {analysis.urgentSpecialists.length > 0 && (
                   <div className="p-4 bg-red-50 dark:bg-red-900/20 rounded-lg">
                     <h5 className="font-semibold text-red-700 dark:text-red-400 mb-3">Urgent Consultations</h5>
-                    <ul className="space-y-2">
-                      {analysis.urgentSpecialists.map((specialist, index) => (
-                        <li key={index} className="flex items-start gap-3 text-red-700 dark:text-red-400">
-                          <span className="inline-block w-2 h-2 mt-2 rounded-full bg-red-500" />
-                          <span>{specialist}</span>
-                        </li>
-                      ))}
-                    </ul>
+                    {renderDoctors(analysis.urgentSpecialists)}
                   </div>
                 )}
                 {analysis.soonSpecialists.length > 0 && (
                   <div className="p-4 bg-orange-50 dark:bg-orange-900/20 rounded-lg">
                     <h5 className="font-semibold text-orange-700 dark:text-orange-400 mb-3">Soon Consultations</h5>
-                    <ul className="space-y-2">
-                      {analysis.soonSpecialists.map((specialist, index) => (
-                        <li key={index} className="flex items-start gap-3 text-orange-700 dark:text-orange-400">
-                          <span className="inline-block w-2 h-2 mt-2 rounded-full bg-orange-500" />
-                          <span>{specialist}</span>
-                        </li>
-                      ))}
-                    </ul>
+                    {renderDoctors(analysis.soonSpecialists)}
                   </div>
                 )}
                 {analysis.routineSpecialists.length > 0 && (
                   <div className="p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
                     <h5 className="font-semibold text-blue-700 dark:text-blue-400 mb-3">Routine Consultations</h5>
-                    <ul className="space-y-2">
-                      {analysis.routineSpecialists.map((specialist, index) => (
-                        <li key={index} className="flex items-start gap-3 text-blue-700 dark:text-blue-400">
-                          <span className="inline-block w-2 h-2 mt-2 rounded-full bg-blue-500" />
-                          <span>{specialist}</span>
-                        </li>
-                      ))}
-                    </ul>
+                    {renderDoctors(analysis.routineSpecialists)}
                   </div>
                 )}
               </div>

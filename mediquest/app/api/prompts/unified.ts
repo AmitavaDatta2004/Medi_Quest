@@ -1,4 +1,4 @@
-export const getUnifiedPrompt = (language: string) => `Carefully analyze this medical report image and provide a detailed yet simple explanation of the findings. Your goal is to make the analysis easy to understand for someone without a medical background. 
+export const getUnifiedPrompt = (language: string, location: string) => `Carefully analyze this medical report image and provide a detailed yet simple explanation of the findings. Your goal is to make the analysis easy to understand for someone without a medical background. 
 
 🔹 **IMPORTANT:** The entire response must be generated in **${language}**. Use proper grammar and medical terminology, but ensure the explanation remains easy to understand.
 
@@ -25,6 +25,7 @@ Structure your response in JSON format with the following sections, ensuring the
 
 4. **Specialist Recommendations**:
    - List any specialists the user should see, such as a cardiologist or endocrinologist.
+   - For each specialist, provide a list of 5 doctors in ${location} that the user can consult.
    - Explain why each specialist is needed and how they can help with the user's specific health issues.
    - Indicate how soon the user should see each specialist (e.g., immediately, within a few weeks, or during a routine check-up).
    - If relevant, mention any subspecialties that might be needed for more focused care.
@@ -48,9 +49,9 @@ Format the response as a JSON string with the following structure:
   "commonHealthIssues": ["string - List of common health issues, with easy-to-understand explanations and tips for management."],
   "severeHealthIssues": ["string - List of serious health issues, including symptoms, risks, and what the user should do next."],
   "specialistsSummary": "string - A clear summary of which specialists the user should see and why.",
-  "urgentSpecialists": ["string - List of specialists needed urgently, with simple explanations for the urgency."],
-  "soonSpecialists": ["string - List of specialists recommended for consultation within a short timeframe."],
-  "routineSpecialists": ["string - List of specialists for routine check-ups or ongoing care."],
+  "urgentSpecialists": ["string - List of specialists needed urgently, with simple explanations for the urgency and 5 doctors in ${location}."],
+  "soonSpecialists": ["string - List of specialists recommended for consultation within a short timeframe, with 5 doctors in ${location}."],
+  "routineSpecialists": ["string - List of specialists for routine check-ups or ongoing care, with 5 doctors in ${location}."],
   "medicationsSummary": "string - A simple summary of any medications recommended or prescribed, including their purpose."],
   "prescriptionMedications": ["string - List of prescription medications, with clear explanations of their purpose, dosage, and side effects."],
   "OTCMedications": ["string - List of over-the-counter medications, with simple instructions on how to use them."]

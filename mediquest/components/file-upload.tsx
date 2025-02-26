@@ -41,6 +41,7 @@ export function FileUpload() {
   const [analysis, setAnalysis] = useState<AnalysisResponse | null>(null);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [language, setLanguage] = useState("english");
+  const [location, setLocation] = useState("");
   const { toast } = useToast();
 
   const handleFileDrop = (e: React.DragEvent<HTMLDivElement>) => {
@@ -95,7 +96,7 @@ export function FileUpload() {
   };
 
   const analyzeReport = async () => {
-    if (!file) return;
+    if (!file || !location) return;
 
     setLoading(true);
     setUploadProgress(0);
@@ -104,6 +105,7 @@ export function FileUpload() {
       const formData = new FormData();
       formData.append("file", file);
       formData.append("language", language);
+      formData.append("location", location);
 
       const response = await fetch("/api/analyze", {
         method: "POST",
@@ -158,9 +160,17 @@ export function FileUpload() {
           <option value="French">French</option>
           <option value="Spanish">Spanish</option>
         </select>
+        <label className="block text-sm font-medium text-gray-700 mt-4">Enter Location</label>
+        <input
+          type="text"
+          className="w-full p-2 border rounded-md mt-2"
+          value={location}
+          onChange={(e) => setLocation(e.target.value)}
+          placeholder="Enter your location"
+          disabled={loading}
+        />
         <div
           className={`border-2 border-dashed rounded-lg p-12 text-center cursor-pointer transition-colors ${loading
-
             ? "border-gray-300 bg-gray-50"
             : "border-gray-300 hover:border-primary"
             }`}
@@ -217,7 +227,7 @@ export function FileUpload() {
             </div>
             <Button
               onClick={analyzeReport}
-              disabled={loading}
+              disabled={loading || !location}
             >
               {loading ? "Analyzing..." : "Analyze Report"}
             </Button>
@@ -246,6 +256,7 @@ export function FileUpload() {
             prescriptionMedications: analysis.prescriptionMedications || [],
             OTCMedications: analysis.OTCMedications || [],
           }}
+          location={location}
         />
       )}
     </div>
