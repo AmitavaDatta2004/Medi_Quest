@@ -30,7 +30,7 @@ export class GeminiService {
           temperature: 0.1,
           topK: 20,
           topP: 0.8,
-          maxOutputTokens: 2048,
+          maxOutputTokens: 8192,
         },
         safetySettings: [
           { category: "HARM_CATEGORY_HARASSMENT", threshold: "BLOCK_MEDIUM_AND_ABOVE" },
