@@ -21,12 +21,22 @@ interface DietPlan {
   avoid: string[];
 }
 
+interface NearbyDoctors {
+  name: string[];
+  phone: string[];
+  location: string[];
+  specialties: string[];
+}
+
 interface AnalysisResult {
   diseases: Disease[];
   medications: Medications;
   dietPlan: DietPlan;
-  workouts: string[];
+  workouts: string[]
+  doctors: NearbyDoctors[];
 }
+
+
 
 class RateLimitedGeminiAPI {
   private genAI: GoogleGenerativeAI;
@@ -49,7 +59,8 @@ class RateLimitedGeminiAPI {
   async analyzeSymptomsAndGetDiseases(
     symptoms: string[],
     retries = 3,
-    selectedLanguage: string
+    selectedLanguage: string,
+    location: string
   ): Promise<AnalysisResult> {
     if (!process.env.NEXT_PUBLIC_GEMINI_API_KEY) {
       throw new Error(
@@ -66,7 +77,7 @@ class RateLimitedGeminiAPI {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ symptoms, language: selectedLanguage }),
+          body: JSON.stringify({ symptoms, language: selectedLanguage, location }),
         });
 
         console.log(`Response status: ${response.status}`);
@@ -90,7 +101,8 @@ class RateLimitedGeminiAPI {
           !data.diseases ||
           !data.medications ||
           !data.dietPlan ||
-          !data.workouts
+          !data.workouts ||
+          !data.doctors
         ) {
           throw new Error("API response is missing required fields");
         }

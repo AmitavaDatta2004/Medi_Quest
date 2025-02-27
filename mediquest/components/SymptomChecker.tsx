@@ -40,7 +40,7 @@ const commonSymptoms = [
   "Sore Throat",
 ];
 
-const languages = ["English", "Spanish", "French", "German", "Chinese", "Hindi", "Bengali","Tamil","Urdu"];
+const languages = ["English", "Spanish", "French", "German", "Chinese", "Hindi", "Bengali", "Tamil", "Urdu"];
 
 interface Disease {
   name: string;
@@ -60,17 +60,27 @@ interface DietPlan {
   avoid: string[];
 }
 
+interface NearbyDoctors {
+  name: string[];
+  phone: string[];
+  location: string[];
+  specialties: string[];
+}
+
 interface AnalysisResult {
   diseases: Disease[];
   medications: Medications;
   dietPlan: DietPlan;
   workouts: string[];
+  doctors: NearbyDoctors[];
 }
+
 
 export default function SymptomChecker() {
   const [symptoms, setSymptoms] = useState<string[]>([]);
   const [newSymptom, setNewSymptom] = useState("");
   const [language, setLanguage] = useState("");
+  const [location, setlocation] = useState("");
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<AnalysisResult | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -97,18 +107,18 @@ export default function SymptomChecker() {
       setError("Please add at least one symptom.");
       return;
     }
-  
+
     if (!process.env.NEXT_PUBLIC_GEMINI_API_KEY) {
       setError("Gemini API key is not configured. Please set NEXT_PUBLIC_GEMINI_API_KEY in your environment variables.");
       return;
     }
-  
+
     setLoading(true);
     setError(null);
     setResult(null);
-  
+
     try {
-      const analysis: AnalysisResult = await geminiAPI.analyzeSymptomsAndGetDiseases(symptoms, 3, language);
+      const analysis: AnalysisResult = await geminiAPI.analyzeSymptomsAndGetDiseases(symptoms, 3, language, location);
       console.log("Analysis result:", analysis);
       setResult(analysis);
     } catch (err: unknown) { // <-- Updated line
@@ -154,9 +164,9 @@ export default function SymptomChecker() {
             onKeyPress={(e) => e.key === "Enter" && handleAddSymptom()}
             className="h-12 text-lg"
           />
-          <Button 
-            onClick={handleAddSymptom} 
-            disabled={!newSymptom.trim()} 
+          <Button
+            onClick={handleAddSymptom}
+            disabled={!newSymptom.trim()}
             size="lg"
             className="gradient-bg hover:opacity-90 transition-opacity"
           >
@@ -175,17 +185,26 @@ export default function SymptomChecker() {
                 variant={symptoms.includes(symptom) ? "default" : "outline"}
                 size="sm"
                 onClick={() => handleCommonSymptomClick(symptom)}
-                className={`symptom-tag ${
-                  symptoms.includes(symptom) 
-                    ? 'gradient-bg hover:opacity-90' 
-                    : 'hover:border-primary/50'
-                }`}
+                className={`symptom-tag ${symptoms.includes(symptom)
+                  ? 'gradient-bg hover:opacity-90'
+                  : 'hover:border-primary/50'
+                  }`}
               >
                 {symptom}
               </Button>
             ))}
           </div>
         </div>
+
+        <label className="block text-sm font-medium text-gray-700 mt-4">Enter Location</label>
+        <input
+          type="text"
+          className="w-full p-2 border rounded-md mt-2"
+          value={location}
+          onChange={(e) => setlocation(e.target.value)}
+          placeholder="Enter your location"
+          disabled={loading}
+        />
 
         {/* Selected Symptoms */}
         {symptoms.length > 0 && (
@@ -241,7 +260,7 @@ export default function SymptomChecker() {
           <div className="relative">
             <div className="absolute inset-0 bg-gradient-to-r from-primary/10 to-accent/10 rounded-3xl blur-3xl" />
             <Tabs defaultValue="diseases" className="space-y-6 relative">
-              <TabsList className="grid w-full grid-cols-5 p-1 bg-background/50 backdrop-blur-sm rounded-2xl border border-primary/20">
+              <TabsList className="grid w-full grid-cols-6 p-1 bg-background/50 backdrop-blur-sm rounded-2xl border border-primary/20">
                 <TabsTrigger value="diseases" className="data-[state=active]:gradient-bg">
                   <HeartPulse className="h-4 w-4 mr-2" />
                   Diseases
@@ -261,6 +280,10 @@ export default function SymptomChecker() {
                 <TabsTrigger value="workouts" className="data-[state=active]:gradient-bg">
                   <Dumbbell className="h-4 w-4 mr-2" />
                   Workouts
+                </TabsTrigger>
+                <TabsTrigger value="doctors" className="data-[state=active]:gradient-bg">
+                  <Stethoscope className="h-4 w-4 mr-2" />
+                  Doctors
                 </TabsTrigger>
               </TabsList>
 
@@ -475,6 +498,42 @@ export default function SymptomChecker() {
                   </Card>
                 </div>
               </TabsContent>
+              <TabsContent value="doctors" className="space-y-6">
+                <div className="gradient-border">
+                  <Card className="p-6 bg-background/50 backdrop-blur-sm">
+                    <div className="space-y-6">
+                      <div className="flex items-center gap-4">
+                        <div className="p-3 rounded-full bg-primary/10 text-primary glow">
+                          <Stethoscope className="h-6 w-6" />
+                        </div>
+                        <h3 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent">
+                          Nearby Doctors
+                        </h3>
+                      </div>
+                      <div className="grid gap-4">
+                        {result.doctors?.map((doctors: NearbyDoctors, index: number) => (
+                          <div key={index} className="space-y-4">
+                            {doctors.name.map((name: string, i: number) => (
+                              <div key={i} className="flex items-start gap-4 p-4 rounded-lg bg-primary/5 border border-primary/10">
+                                <div className="p-2 rounded-full bg-primary/10 mt-1">
+                                  <Stethoscope className="h-4 w-4 text-primary" />
+                                </div>
+                                <div className="flex-1">
+                                  <p className="text-muted-foreground text-lg font-semibold">{name}</p>
+                                  <p className="text-muted-foreground text-sm">{doctors.specialties[i]}</p>
+                                  <p className="text-muted-foreground text-sm">{doctors.location[i]}</p>
+                                  <p className="text-muted-foreground text-sm">{doctors.phone[i]}</p>
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </Card>
+                </div>
+              </TabsContent>
+
             </Tabs>
           </div>
 
@@ -484,8 +543,8 @@ export default function SymptomChecker() {
               fileName="health-report.pdf"
             >
               {({ loading }) => (
-                <Button 
-                  disabled={loading} 
+                <Button
+                  disabled={loading}
                   className="w-full gradient-bg hover:opacity-90 transition-opacity h-14 text-lg"
                 >
                   <FileDown className="h-5 w-5 mr-2" />
