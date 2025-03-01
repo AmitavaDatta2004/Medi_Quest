@@ -60,20 +60,35 @@ interface DietPlan {
   avoid: string[];
 }
 
+interface Doctor {
+  name: string;
+  speciality: string;
+  location: string;
+}
+
 interface AnalysisResult {
   diseases: Disease[];
   medications: Medications;
   dietPlan: DietPlan;
   workouts: string[];
+  doctors: Doctor[];
 }
 
 export default function SymptomChecker() {
   const [symptoms, setSymptoms] = useState<string[]>([]);
   const [newSymptom, setNewSymptom] = useState("");
   const [language, setLanguage] = useState("");
+  const [location, setLocation] = useState("");
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<AnalysisResult | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [healthQuestions, setHealthQuestions] = useState({
+    chronicIllnesses: "",
+    medicationsAllergies: "",
+    surgeriesVaccinations: "",
+    lifestyle: "",
+    sleepPattern: "",
+  });
 
   const handleAddSymptom = () => {
     if (newSymptom && !symptoms.includes(newSymptom)) {
@@ -108,10 +123,10 @@ export default function SymptomChecker() {
     setResult(null);
   
     try {
-      const analysis: AnalysisResult = await geminiAPI.analyzeSymptomsAndGetDiseases(symptoms, 3, language);
+      const analysis: AnalysisResult = await geminiAPI.analyzeSymptomsAndGetDiseases(symptoms, 3, language, location, healthQuestions);
       console.log("Analysis result:", analysis);
       setResult(analysis);
-    } catch (err: unknown) { // <-- Updated line
+    } catch (err: unknown) {
       if (err instanceof Error) {
         setError(err.message || "Failed to analyze symptoms. Please try again.");
       } else {
@@ -145,6 +160,13 @@ export default function SymptomChecker() {
             ))}
           </SelectContent>
         </Select>
+
+        <Input
+          value={location}
+          onChange={(e) => setLocation(e.target.value)}
+          placeholder="Enter your location..."
+          className="h-12 text-lg"
+        />
 
         <div className="flex gap-3">
           <Input
@@ -208,6 +230,41 @@ export default function SymptomChecker() {
           </div>
         )}
 
+        {/* Health Questions */}
+        <div className="space-y-6">
+          <h3 className="text-lg font-medium text-primary/80">Health Questions</h3>
+          <Input
+            value={healthQuestions.chronicIllnesses}
+            onChange={(e) => setHealthQuestions({ ...healthQuestions, chronicIllnesses: e.target.value })}
+            placeholder="Do you have any chronic illnesses, long-term medical conditions, or a family history of serious diseases?"
+            className="h-12 text-lg"
+          />
+          <Input
+            value={healthQuestions.medicationsAllergies}
+            onChange={(e) => setHealthQuestions({ ...healthQuestions, medicationsAllergies: e.target.value })}
+            placeholder="Are you currently taking any medications, supplements, or have any known allergies?"
+            className="h-12 text-lg"
+          />
+          <Input
+            value={healthQuestions.surgeriesVaccinations}
+            onChange={(e) => setHealthQuestions({ ...healthQuestions, surgeriesVaccinations: e.target.value })}
+            placeholder="Have you had any major surgeries, hospitalizations, or recent vaccinations/check-ups?"
+            className="h-12 text-lg"
+          />
+          <Input
+            value={healthQuestions.lifestyle}
+            onChange={(e) => setHealthQuestions({ ...healthQuestions, lifestyle: e.target.value })}
+            placeholder="Do you smoke, drink alcohol, use recreational drugs, or experience high levels of stress/anxiety?"
+            className="h-12 text-lg"
+          />
+          <Input
+            value={healthQuestions.sleepPattern}
+            onChange={(e) => setHealthQuestions({ ...healthQuestions, sleepPattern: e.target.value })}
+            placeholder="How is your sleep pattern, and does your occupation or lifestyle expose you to any health risks?"
+            className="h-12 text-lg"
+          />
+        </div>
+
         {error && (
           <div className="flex items-center gap-2 text-destructive p-4 bg-destructive/10 rounded-lg">
             <AlertCircle className="h-5 w-5" />
@@ -241,7 +298,7 @@ export default function SymptomChecker() {
           <div className="relative">
             <div className="absolute inset-0 bg-gradient-to-r from-primary/10 to-accent/10 rounded-3xl blur-3xl" />
             <Tabs defaultValue="diseases" className="space-y-6 relative">
-              <TabsList className="grid w-full grid-cols-5 p-1 bg-background/50 backdrop-blur-sm rounded-2xl border border-primary/20">
+              <TabsList className="grid w-full grid-cols-6 p-1 bg-background/50 backdrop-blur-sm rounded-2xl border border-primary/20">
                 <TabsTrigger value="diseases" className="data-[state=active]:gradient-bg">
                   <HeartPulse className="h-4 w-4 mr-2" />
                   Diseases
@@ -261,6 +318,10 @@ export default function SymptomChecker() {
                 <TabsTrigger value="workouts" className="data-[state=active]:gradient-bg">
                   <Dumbbell className="h-4 w-4 mr-2" />
                   Workouts
+                </TabsTrigger>
+                <TabsTrigger value="doctors" className="data-[state=active]:gradient-bg">
+                  <Stethoscope className="h-4 w-4 mr-2" />
+                  Doctors
                 </TabsTrigger>
               </TabsList>
 
@@ -468,6 +529,33 @@ export default function SymptomChecker() {
                               <Activity className="h-4 w-4 text-primary" />
                             </div>
                             <p className="text-muted-foreground text-lg">{workout}</p>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </Card>
+                </div>
+              </TabsContent>
+
+              <TabsContent value="doctors" className="space-y-6">
+                <div className="gradient-border">
+                  <Card className="p-6 bg-background/50 backdrop-blur-sm">
+                    <div className="space-y-6">
+                      <div className="flex items-center gap-4">
+                        <div className="p-3 rounded-full bg-primary/10 text-primary glow">
+                          <Stethoscope className="h-6 w-6" />
+                        </div>
+                        <h3 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent">
+                          Recommended Doctors
+                        </h3>
+                      </div>
+                      <div className="grid gap-4">
+                        {result.doctors?.map((doctor: Doctor, i: number) => (
+                          <div key={i} className="flex items-start gap-4 p-4 rounded-lg bg-primary/5 border border-primary/10">
+                            <div className="p-2 rounded-full bg-primary/10 mt-1">
+                              <Stethoscope className="h-4 w-4 text-primary" />
+                            </div>
+                            <p className="text-muted-foreground text-lg">{doctor.name} - {doctor.speciality}</p>
                           </div>
                         ))}
                       </div>

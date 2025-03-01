@@ -54,12 +54,19 @@ interface DietPlan {
   avoid: string[];
 }
 
+interface Doctor {
+  name: string;
+  speciality: string;
+  location: string;
+}
+
 interface HealthData {
   diseases?: Disease[];
   medications?: Medications;
   dietPlan?: DietPlan;
   workouts?: string[];
   generalPrecautions?: string[];
+  doctors?: Doctor[];
 }
 
 interface HealthReportProps {
@@ -70,9 +77,8 @@ interface HealthReportProps {
 export default function HealthReport({ data, symptoms }: HealthReportProps) {
   const diseases = data.diseases || [];
   const medications = data.medications || { otc: [], prescribed: [] };
-  // const dietPlan = data.dietPlan || { recommended: [], avoid: [] };
-  // const workouts = data.workouts || [];
   const generalPrecautions = data.generalPrecautions || [];
+  const doctors = data.doctors || [];
 
   return (
     <Document>
@@ -164,6 +170,19 @@ export default function HealthReport({ data, symptoms }: HealthReportProps) {
             ))
           ) : (
             <Text style={styles.text}>No prescription medications suggested.</Text>
+          )}
+        </View>
+
+        <View style={styles.section}>
+          <Text style={styles.heading}>Recommended Doctors</Text>
+          {doctors.length > 0 ? (
+            doctors.map((doctor, index) => (
+              <Text key={index} style={styles.listItem}>
+                • {doctor.name} - {doctor.speciality} ({doctor.location})
+              </Text>
+            ))
+          ) : (
+            <Text style={styles.text}>No doctors recommended.</Text>
           )}
         </View>
       </Page>

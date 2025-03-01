@@ -11,7 +11,7 @@ export default function Footer() {
           <div>
             <Link href="/" className="flex items-center space-x-2 mb-4">
               <Stethoscope className="h-8 w-8 text-primary" />
-              <span className="text-xl font-bold">MediCare</span>
+              <span className="text-xl font-bold">MediQuest</span>
             </Link>
             <p className="text-muted-foreground">
               Empowering healthcare decisions with AI-driven solutions.

@@ -2,7 +2,6 @@
 
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
-// Define the AnalysisResult interface to match the expected structure
 interface Disease {
   name: string;
   probability: number;
@@ -21,11 +20,18 @@ interface DietPlan {
   avoid: string[];
 }
 
+interface Doctor {
+  name: string;
+  speciality: string;
+  location: string;
+}
+
 interface AnalysisResult {
   diseases: Disease[];
   medications: Medications;
   dietPlan: DietPlan;
   workouts: string[];
+  doctors: Doctor[];
 }
 
 class RateLimitedGeminiAPI {
@@ -35,7 +41,6 @@ class RateLimitedGeminiAPI {
     const apiKey = process.env.NEXT_PUBLIC_GEMINI_API_KEY;
     if (!apiKey) {
       console.error("Warning: NEXT_PUBLIC_GEMINI_API_KEY is not set");
-      // Use a default error message instead of throwing
       this.genAI = new GoogleGenerativeAI("dummy-key");
       return;
     }
@@ -49,7 +54,15 @@ class RateLimitedGeminiAPI {
   async analyzeSymptomsAndGetDiseases(
     symptoms: string[],
     retries = 3,
-    selectedLanguage: string
+    selectedLanguage: string,
+    location: string,
+    healthQuestions: {
+      chronicIllnesses: string;
+      medicationsAllergies: string;
+      surgeriesVaccinations: string;
+      lifestyle: string;
+      sleepPattern: string;
+    }
   ): Promise<AnalysisResult> {
     if (!process.env.NEXT_PUBLIC_GEMINI_API_KEY) {
       throw new Error(
@@ -66,7 +79,7 @@ class RateLimitedGeminiAPI {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ symptoms, language: selectedLanguage }),
+          body: JSON.stringify({ symptoms, language: selectedLanguage, location, healthQuestions }),
         });
 
         console.log(`Response status: ${response.status}`);
@@ -85,12 +98,12 @@ class RateLimitedGeminiAPI {
           throw new Error("Invalid API response format");
         }
 
-        // Ensure the response matches the AnalysisResult structure
         if (
           !data.diseases ||
           !data.medications ||
           !data.dietPlan ||
-          !data.workouts
+          !data.workouts ||
+          !data.doctors
         ) {
           throw new Error("API response is missing required fields");
         }
@@ -108,7 +121,6 @@ class RateLimitedGeminiAPI {
       }
     }
 
-    // This line is required to satisfy TypeScript's return type
     throw new Error("All retry attempts failed");
   }
 }
