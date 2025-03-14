@@ -1,6 +1,7 @@
 "use client";
 
 import { Stethoscope } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 
 export default function Footer() {
@@ -10,14 +11,19 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div>
             <Link href="/" className="flex items-center space-x-2 mb-4">
-              <Stethoscope className="h-8 w-8 text-primary" />
+              <Image
+                src="/logo-mediquest.png" // Ensure the image is in the public folder
+                alt="logo"
+                width={64} // Set the width
+                height={64} // Set the height
+              />
               <span className="text-xl font-bold">MediQuest</span>
             </Link>
             <p className="text-muted-foreground">
               Empowering healthcare decisions with AI-driven solutions.
             </p>
           </div>
-          
+
           <div>
             <h3 className="font-semibold mb-4">Services</h3>
             <ul className="space-y-2">
@@ -38,7 +44,7 @@ export default function Footer() {
               </li>
             </ul>
           </div>
-          
+
           <div>
             <h3 className="font-semibold mb-4">Company</h3>
             <ul className="space-y-2">
@@ -59,7 +65,7 @@ export default function Footer() {
               </li>
             </ul>
           </div>
-          
+
           <div>
             <h3 className="font-semibold mb-4">Connect</h3>
             <ul className="space-y-2">
@@ -81,7 +87,7 @@ export default function Footer() {
             </ul>
           </div>
         </div>
-        
+
         <div className="border-t border-border mt-8 pt-8 text-center text-muted-foreground">
           <p>&copy; {new Date().getFullYear()} MediCare. All rights reserved.</p>
         </div>
