@@ -10,25 +10,29 @@ const developers = [
     name: "Amitava Datta",
     role: "Backend Developer",
     image: "/AmitavaDatta.jpg",
-    gradient: "from-blue-500 to-cyan-500"
+    gradient: "from-blue-500 to-cyan-500",
+    github: "https://github.com/AmitavaDatta2004"
   },
   {
     name: "Pranay De",
     role: "ML Engineer",
     image: "/PranayDe.jpg",
-    gradient: "from-purple-500 to-pink-500"
+    gradient: "from-purple-500 to-pink-500",
+    github: "https://github.com/PRANAY130"
   },
   {
     name: "Aitijhya Roy",
     role: "UI UX Designer",
     image: "/AitijhyaRoy.jpg",
-    gradient: "from-green-500 to-emerald-500"
+    gradient: "from-green-500 to-emerald-500",
+    github: "https://github.com/AitijhyaCoded"
   },
   {
     name: "Rudranil Das",
     role: "Frontend Developer",
     image: "/RudranilDas.jpg",
-    gradient: "from-orange-500 to-red-500"
+    gradient: "from-orange-500 to-red-500",
+    github: "https://github.com/Thorfinn05"
   },
 ];
 
@@ -76,7 +80,7 @@ export default function Developers() {
                 <CardContent>
                   <p className="text-lg text-muted-foreground mb-6">{developer.role}</p>
                   <div className="flex justify-center space-x-6">
-                    <a href="#" className="social-icon">
+                    <a href={developer.github} className="social-icon">
                       <Github className="h-6 w-6" />
                     </a>
                     <a href="#" className="social-icon">
