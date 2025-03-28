@@ -112,7 +112,7 @@ function cleanJsonResponse(text: string): string {
 // Main Function: Analyze Image
 export async function analyzeImage(base64Image: string, mimeType: string, prompt: string) {
   try {
-    const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
+    const model = genAI.getGenerativeModel({ model: 'gemini-2.5-pro-exp-03-25' });
 
     const generateResponse = async () => {
       const result = await model.generateContent([
