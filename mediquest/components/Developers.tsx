@@ -20,20 +20,20 @@ const developers = [
     gradient: "from-purple-500 to-pink-500",
     github: "https://github.com/PRANAY130"
   },
-  {
-    name: "Aitijhya Roy",
-    role: "UI UX Designer",
-    image: "/AitijhyaRoy.jpg",
-    gradient: "from-green-500 to-emerald-500",
-    github: "https://github.com/AitijhyaCoded"
-  },
-  {
-    name: "Rudranil Das",
-    role: "Frontend Developer",
-    image: "/RudranilDas.jpg",
-    gradient: "from-orange-500 to-red-500",
-    github: "https://github.com/Thorfinn05"
-  },
+  // {
+  //   name: "Aitijhya Roy",
+  //   role: "UI UX Designer",
+  //   image: "/AitijhyaRoy.jpg",
+  //   gradient: "from-green-500 to-emerald-500",
+  //   github: "https://github.com/AitijhyaCoded"
+  // },
+  // {
+  //   name: "Rudranil Das",
+  //   role: "Frontend Developer",
+  //   image: "/RudranilDas.jpg",
+  //   gradient: "from-orange-500 to-red-500",
+  //   github: "https://github.com/Thorfinn05"
+  // },
 ];
 
 export default function Developers() {

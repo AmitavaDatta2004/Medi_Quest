@@ -23,42 +23,42 @@ const features = [
     description: "Comprehensive details about medications and their effects",
     gradient: "from-green-500 to-emerald-500"
   },
-  {
-    title: "24/7 Health Monitoring",
-    icon: Activity,
-    description: "Continuous tracking of vital health parameters",
-    gradient: "from-red-500 to-orange-500"
-  },
-  {
-    title: "Emergency Response",
-    icon: HeartPulse,
-    description: "Quick access to emergency services and first-aid guidance",
-    gradient: "from-yellow-500 to-amber-500"
-  },
+  // {
+  //   title: "24/7 Health Monitoring",
+  //   icon: Activity,
+  //   description: "Continuous tracking of vital health parameters",
+  //   gradient: "from-red-500 to-orange-500"
+  // },
+  // {
+  //   title: "Emergency Response",
+  //   icon: HeartPulse,
+  //   description: "Quick access to emergency services and first-aid guidance",
+  //   gradient: "from-yellow-500 to-amber-500"
+  // },
   {
     title: "Lab Results Interpretation",
     icon: Microscope,
     description: "Easy-to-understand explanations of laboratory results",
     gradient: "from-indigo-500 to-violet-500"
   },
-  {
-    title: "Vaccination Tracker",
-    icon: Syringe,
-    description: "Keep track of immunization schedules and records",
-    gradient: "from-teal-500 to-cyan-500"
-  },
+  // {
+  //   title: "Vaccination Tracker",
+  //   icon: Syringe,
+  //   description: "Keep track of immunization schedules and records",
+  //   gradient: "from-teal-500 to-cyan-500"
+  // },
   {
     title: "Real-time Health Alerts",
     icon: Clock,
     description: "Timely notifications for medications and appointments",
     gradient: "from-fuchsia-500 to-pink-500"
   },
-  {
-    title: "Secure Health Records",
-    icon: Shield,
-    description: "Encrypted storage of all your medical information",
-    gradient: "from-blue-500 to-indigo-500"
-  },
+  // {
+  //   title: "Secure Health Records",
+  //   icon: Shield,
+  //   description: "Encrypted storage of all your medical information",
+  //   gradient: "from-blue-500 to-indigo-500"
+  // },
   {
     title: "Personalized Health Plans",
     icon: UserCog,
